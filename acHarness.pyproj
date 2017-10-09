@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3f3ce49d-7094-462e-a30c-9ae5941e27de}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>acHarness\acHarness.py</StartupFile>
+    <StartupFile>acPyHarness\acPyHarness.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -23,13 +23,13 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="acHarness\acsys.py">
+    <Compile Include="acPyHarness\acsys.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="acHarness\acHarness.py">
+    <Compile Include="acPyHarness\acPyHarness.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="acHarness\ac.py">
+    <Compile Include="acPyHarness\ac.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AssettoCorsa\apps\python\driftbox\driftbox.py" />
@@ -62,7 +62,7 @@
     <Folder Include="AssettoCorsa\content\gui\" />
     <Folder Include="AssettoCorsa\content\gui\icons\" />
     <Folder Include="AssettoCorsa\" />
-    <Folder Include="acHarness\" />
+    <Folder Include="acPyHarness\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{97d47cb8-923c-4705-b847-d3fde638b63e}\3.5" />
