@@ -14,7 +14,7 @@
     <InterpreterId>{97d47cb8-923c-4705-b847-d3fde638b63e}</InterpreterId>
     <InterpreterVersion>3.5</InterpreterVersion>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <Name>acHarness</Name>
+    <Name>acPyHarness</Name>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
