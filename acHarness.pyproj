@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3f3ce49d-7094-462e-a30c-9ae5941e27de}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>acHarness\acHarness.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>{97d47cb8-923c-4705-b847-d3fde638b63e}</InterpreterId>
+    <InterpreterVersion>3.5</InterpreterVersion>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <Name>acHarness</Name>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="acHarness\acsys.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="acHarness\acHarness.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="acHarness\ac.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssettoCorsa\apps\python\driftbox\driftbox.py" />
+    <Compile Include="apps\python\driftbox_small\driftbox_small.py" />
+    <Compile Include="apps\python\driftbox_transparent\driftbox_transparent.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AssettoCorsa\apps\python\driftbox\gfx\db_bg_driftpractice.png" />
+    <Content Include="AssettoCorsa\apps\python\driftbox\gfx\db_bg_spinfull.png" />
+    <Content Include="apps\python\driftbox_small\gfx\db_bg_driftpractice_small.png" />
+    <Content Include="apps\python\driftbox_small\gfx\db_bg_spin_small.png" />
+    <Content Include="AssettoCorsa\content\gui\icons\driftbox_OFF.png" />
+    <Content Include="AssettoCorsa\content\gui\icons\driftbox_ON.png" />
+    <Content Include="AssettoCorsa\content\gui\icons\driftbox_small_OFF.png" />
+    <Content Include="AssettoCorsa\content\gui\icons\driftbox_small_ON.png" />
+    <Content Include="AssettoCorsa\content\gui\icons\driftbox_transparent_OFF.png" />
+    <Content Include="AssettoCorsa\content\gui\icons\driftbox_transparent_ON.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="apps\" />
+    <Folder Include="apps\python\" />
+    <Folder Include="AssettoCorsa\apps\" />
+    <Folder Include="AssettoCorsa\apps\python\" />
+    <Folder Include="AssettoCorsa\apps\python\driftbox\" />
+    <Folder Include="AssettoCorsa\apps\python\driftbox\gfx\" />
+    <Folder Include="apps\python\driftbox_small" />
+    <Folder Include="apps\python\driftbox_small\gfx" />
+    <Folder Include="apps\python\driftbox_transparent" />
+    <Folder Include="AssettoCorsa\content\" />
+    <Folder Include="AssettoCorsa\content\gui\" />
+    <Folder Include="AssettoCorsa\content\gui\icons\" />
+    <Folder Include="AssettoCorsa\" />
+    <Folder Include="acHarness\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="{97d47cb8-923c-4705-b847-d3fde638b63e}\3.5" />
+    <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\2.7" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>
