@@ -4,11 +4,13 @@ import importlib
 import os
 import sys
 import logging
+from acInTk import acUpdate
 
 # Assetto Corsa Python app under development:
 # (in this case ..\AssettoCorsa\apps\python\driftbox\driftbox.py)
 appName = 'driftbox'
 appPath = os.path.join(os.getcwd(),  'AssettoCorsa', 'apps', 'python', appName)
+os.chdir('AssettoCorsa')
 
 # create logger
 logger = logging.getLogger(appName)
@@ -37,14 +39,13 @@ sys.path.append(appPath)
 appModule = importlib.import_module(appName)
 
 ac_version = '1.15.2'
+deltaT = 2000 # mS interval when AC updates this app
 
 def main():
   logger.info("Call app's acMain() as if called from AC")
   appModule.acMain(ac_version)
 
   logger.info("Repeatedly call app's acUpdate() as if called from AC")
-  while 1:
-    deltaT = 1
-    appModule.acUpdate(deltaT)
+  acUpdate(deltaT, appModule.acUpdate)
 
 main()

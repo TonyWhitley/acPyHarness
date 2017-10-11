@@ -23,6 +23,9 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="acPyHarness\acInTk.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="acPyHarness\acsys.py">
       <SubType>Code</SubType>
     </Compile>

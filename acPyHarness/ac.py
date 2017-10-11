@@ -6,6 +6,7 @@ class Status(IntEnum):
   SUCCESS = 1
   FAIL =    -1
 
+import acInTk
 import acsys
 
 # create logger
@@ -375,28 +376,36 @@ def console(VALUE):
 
 def newApp(VALUE):
   acLogger.warning('newApp(VALUE="%s")' % (VALUE))
-  return 99
+  try:
+    _o = acInTk.acInTk()
+    return _o.newApp(VALUE)
+  except:
+    acLogger.error('acInTk FAILED - no graphics')
+    return 99
   # VALUE must be a string
   # Creates a new app and returns the corresponding Identifier.
   # returns the App ID on success, -1 otherwise
 
 def setTitle(CONTROL_IDENTIFIER,TITLE):
   acLogger.warning('setTitle(CONTROL_IDENTIFIER=%d,TITLE="%s")' % (CONTROL_IDENTIFIER,TITLE))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.setTitle(CONTROL_IDENTIFIER,TITLE)
   # TITLE must be a string, CONTROL_IDENTIFIER must be a form
   # This function will set the title of the specified App by CONTROL_IDENTIFIER.
   # The function returns 1 on success, -1 otherwise
 
 def setSize(CONTROL_IDENTIFIER,WIDTH,HEIGHT):
   acLogger.warning('setSize(CONTROL_IDENTIFIER=%d,WIDTH=%d,HEIGHT=%d)' % (CONTROL_IDENTIFIER,WIDTH,HEIGHT))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.setSize(CONTROL_IDENTIFIER,WIDTH,HEIGHT)
   # WIDTH,HEIGHT must be a floating point numbers
   # This function will set the size of a control specified by CONTROL_IDENTIFIER .
   # The function returns 1 on success, -1 otherwise
 
 def addLabel(CONTROL_IDENTIFIER,VALUE):
   acLogger.warning('addLabel(CONTROL_IDENTIFIER=%d,VALUE="%s")' % (CONTROL_IDENTIFIER,VALUE))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.addLabel(CONTROL_IDENTIFIER,VALUE)
   # VALUE must be a string
   # It is possible to add a label to a Window, we need to pass the Window to ac.addLabel and
   # the label name.
@@ -404,7 +413,8 @@ def addLabel(CONTROL_IDENTIFIER,VALUE):
 
 def setPosition(CONTROL_IDENTIFIER,X,Y):
   acLogger.warning('setPosition(CONTROL_IDENTIFIER=%d,X=%d,Y=%d)' % (CONTROL_IDENTIFIER,X,Y))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.setPosition(CONTROL_IDENTIFIER,X,Y)
   # X,Y must be a floating point numbers
   # Use ac.setPosition to set the control's position specified by CONTROL_IDENTIFIER in
   # the app.
@@ -412,7 +422,8 @@ def setPosition(CONTROL_IDENTIFIER,X,Y):
 
 def setIconPosition(CONTROL_IDENTIFIER,X,Y):
   acLogger.warning('setIconPosition(CONTROL_IDENTIFIER=%d,X=%d,Y=%d)' % (CONTROL_IDENTIFIER,X,Y))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.setIconPosition(CONTROL_IDENTIFIER,X,Y)
   # X,Y must be a floating point numbers, CONTROL_IDENTIFIER must be a form
   # Use ac.setPosition to set the new icon's position instead of the default one.
   # The function returns 1 on success, -1 otherwise
@@ -450,7 +461,8 @@ def getText(CONTROL_IDENTIFIER):
 
 def setBackgroundOpacity(CONTROL_IDENTIFIER, VALUE):
   acLogger.warning('setBackgroundOpacity(CONTROL_IDENTIFIER=%d, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.setBackgroundOpacity(CONTROL_IDENTIFIER, VALUE)
   # VALUE must be a floating point value between 0 and 1
   # Use ac.setBackgroundOpacity to change the alpha channel of the desired control.
   # The function returns 1 on success, -1 otherwise
@@ -471,7 +483,11 @@ def drawBorder(CONTROL_IDENTIFIER, VALUE):
 
 def setBackgroundTexture(CONTROL_IDENTIFIER, PATH):
   acLogger.warning('setBackgroundTexture(CONTROL_IDENTIFIER=%d, PATH="%s")' % (CONTROL_IDENTIFIER, PATH))
-  return Status.SUCCESS
+  #try:
+  _o = acInTk.acInTk()
+  return _o.setBackgroundTexture(CONTROL_IDENTIFIER, PATH)
+  #except:
+  #  return Status.FAIL
   # PATH starts from Assetto Corsa root folder, CONTROL_IDENTIFIER must be a
   # control identifier
   # Use ac.setBackgroundTexture to draw a specified texture stored in the path specified by
@@ -480,7 +496,8 @@ def setBackgroundTexture(CONTROL_IDENTIFIER, PATH):
 
 def setFontAlignment(CONTROL_IDENTIFIER, ALIGNMENT):
   acLogger.warning('setFontAlignment(CONTROL_IDENTIFIER=%d, ALIGNMENT="%s")' % (CONTROL_IDENTIFIER, ALIGNMENT))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.setFontAlignment(CONTROL_IDENTIFIER, ALIGNMENT)
   # ALIGNMENT is one of the following strings:
   # "left "
   # "right"
