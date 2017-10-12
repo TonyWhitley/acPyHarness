@@ -21,11 +21,12 @@ def getCarState(CAR_IDENTIFIER, INFO_IDENTIFIER , OPTIONAL_IDENTIFIER=-1):
     acLogger.warning('getCarState(CAR_IDENTIFIER=%d, INFO_IDENTIFIER=%d)' % (CAR_IDENTIFIER, INFO_IDENTIFIER))
   else:
     acLogger.warning('getCarState(CAR_IDENTIFIER=%d, INFO_IDENTIFIER=%d, OPTIONAL_IDENTIFIER=%d)' % (CAR_IDENTIFIER, INFO_IDENTIFIER , OPTIONAL_IDENTIFIER))
+  result = 0
   if INFO_IDENTIFIER ==  acsys.CS.SlipAngle:
     FL = 1
     FR = 1
-    RL = 1
-    RR = 1
+    RL = 12
+    RR = 12
     result = [FL, FR, RL, RR]
   elif INFO_IDENTIFIER == acsys.CS.SpeedKMH:
     speed = 200
@@ -200,6 +201,8 @@ def isCarInPitlane(CAR_ID):
   pass
   # CAR_ID must be the car ID, 0 for the player's car
   # This function returns 1 if the car is currently in the Pitlane
+def isCarInPitline(CAR_ID): # API typo apparently - lane/line
+  acLogger.warning('isCarInPitline(CAR_ID=%d)' % (CAR_ID))
 
 def isCarInPit(CAR_ID):
   acLogger.warning('isCarInPit(CAR_ID=%d)' % (CAR_ID))
@@ -352,8 +355,9 @@ def focusCar(CAR_ID):
   # This function returns 1 on success, -1 otherwise.
 
 def getFocusedCar():
-  acLogger.warning('getFocusedCar(=%d)' % ())
-  pass
+  acLogger.warning('getFocusedCar()')
+  _car = 1  #tbd
+  return _car
   # This method get the selected car index
 
 # DEBUG:
@@ -366,7 +370,7 @@ def log(VALUE):
   # The function returns 1 on success
 
 def console(VALUE):
-  acLogger.warning('console(VALUE=%d)' % (VALUE))
+  acLogger.warning('console(VALUE=%s)' % (VALUE))
   return Status.SUCCESS
   # VALUE must be a string
   # Use ac.console to send a string to the AC console
@@ -445,7 +449,8 @@ def getPosition(CONTROL_IDENTIFIER):
 
 def setText(CONTROL_IDENTIFIER, VALUE):
   acLogger.warning('setText(CONTROL_IDENTIFIER=%d, VALUE="%s")' % (CONTROL_IDENTIFIER, VALUE))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.setText(CONTROL_IDENTIFIER, VALUE)
   # VALUE must be a string, CONTROL_IDENTIFIER is the control that we want to set the
   # text to
   # Set the text of the control specified by CONTROL_IDENTIFIER, with the VALUE text
@@ -516,13 +521,14 @@ def setBackgroundColor(CONTROL_IDENTIFIER, R,G,B):
 
 def setVisible(CONTROL_IDENTIFIER, VALUE):
   acLogger.warning('setVisible(CONTROL_IDENTIFIER=%d, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.setVisible(CONTROL_IDENTIFIER, VALUE)
   # VALUE must be 0 or 1
   # It is possible to hide the object using the function ac.setVisible with VALUE set to 1.
   # The function returns 1 on success, -1 otherwise
 
 def addOnAppActivatedListener(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addOnAppActivatedListener(CONTROL_IDENTIFIER=%d, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
+  acLogger.warning('addOnAppActivatedListener(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE.__name__))
   return Status.SUCCESS
   # VALUE must be a function name defined inside the Python script,
   # CONTROL_IDENTIFIER must be an app.
@@ -531,7 +537,7 @@ def addOnAppActivatedListener(CONTROL_IDENTIFIER, VALUE):
   # The function returns 1 on success, -1 otherwise
 
 def addOnAppDismissedListener(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addOnAppDismissedListener(CONTROL_IDENTIFIER=%d, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
+  acLogger.warning('addOnAppDismissedListener(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE.__name__))
   return Status.SUCCESS
   # VALUE must be a function name defined inside the Python script,
   # CONTROL_IDENTIFIER must be an app.
@@ -548,14 +554,16 @@ def addRenderCallback(CONTROL_IDENTIFIER, VALUE):
 
 def setFontColor(CONTROL_IDENTIFIER,R,G,B,A):
   acLogger.warning('setFontColor(CONTROL_IDENTIFIER=%d,R=%d,G=%d,B=%d,A=%d)' % (CONTROL_IDENTIFIER,R,G,B,A))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.setFontColor(CONTROL_IDENTIFIER,R,G,B,A)
   # CONTROL_IDENTIFIER must be a Controlidentifier, R,G,B,A are the color
   # value scaled from 0 to 1
   # This function returns 1 on success, -1 otherwise
 
 def setFontSize(CONTROL_IDENTIFIER, VALUE):
   acLogger.warning('setFontSize(CONTROL_IDENTIFIER=%d, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.setFontSize(CONTROL_IDENTIFIER, VALUE)
   # This method set VALUE as new new size of the control's font.
   # The function returns 1 on success, -1 otherwise
 
@@ -588,14 +596,15 @@ def setCustomFont(CONTROL_IDENTIFIER, FONTNAME, ITALIC, BOLD):
 # Button:
 
 def addButton(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addButton(CONTROL_IDENTIFIER=%d, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
-  pass
+  acLogger.warning('addButton(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE))
+  _o = acInTk.acInTk()
+  return _o.addButton(CONTROL_IDENTIFIER, VALUE)
   # VALUE must be a string, CONTROL_IDENTIFIER must be a form
   # The function adds a Button to the window specified by CONTROL_IDENTIFIER
   # The function returns the Button ID on success, -1 otherwise
 
 def addOnClickedListener(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addOnClickedListener(CONTROL_IDENTIFIER, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
+  acLogger.warning('addOnClickedListener(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE))
   return Status.SUCCESS
   # VALUE must be a function name defined in this file
   # It is possible to associate the button with an event to trigger when it is clicked using this
@@ -604,14 +613,14 @@ def addOnClickedListener(CONTROL_IDENTIFIER, VALUE):
   # Graph:
 
 def addGraph(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addGraph(CONTROL_IDENTIFIER, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
+  acLogger.warning('addGraph(CONTROL_IDENTIFIER, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE))
   pass
   # VALUE must be a string
   # The function adds a Graph to the window specified in CONTROL_IDENTIFIER
   # The function returns the Graph ID on success, -1 otherwise
 
 def addSerieToGraph(CONTROL_IDENTIFIER, R,G,B):
-  acLogger.warning('addSerieToGraph(CONTROL_IDENTIFIER, R,G,B=%d)' % (CONTROL_IDENTIFIER, R,G,B))
+  acLogger.warning('addSerieToGraph(CONTROL_IDENTIFIER, R=%d,G=%d,B=%d)' % (CONTROL_IDENTIFIER, R,G,B))
   return Status.SUCCESS
   # R,G,B must be floating point numbers between 0 and 1
   # To plot some data it is necessary to add a Serie. A serie is a succession of points to plot on
@@ -620,13 +629,13 @@ def addSerieToGraph(CONTROL_IDENTIFIER, R,G,B):
   # The function returns 1 on success, -1 otherwise
 
 def addValueToGraph(CONTROL_IDENTIFIER,SERIE_INDEX,VALUE):
-  acLogger.warning('addValueToGraph(CONTROL_IDENTIFIER,SERIE_INDEX,VALUE=%d)' % (CONTROL_IDENTIFIER,SERIE_INDEX,VALUE))
+  acLogger.warning('addValueToGraph(CONTROL_IDENTIFIER=%d,SERIE_INDEX=%d,VALUE=%d)' % (CONTROL_IDENTIFIER,SERIE_INDEX,VALUE))
   return Status.SUCCESS
   # SERIE_INDEX is the Serie ID in the graph that where VALUE will be added.
   # The function returns 1 on success, -1 otherwise
 
 def setRange(CONTROL_IDENTIFIER,MIN_VALUE,MAX_VALUE,MAX_POINTS):
-  acLogger.warning('setRange(CONTROL_IDENTIFIER,MIN_VALUE,MAX_VALUE,MAX_POINTS=%d)' % (CONTROL_IDENTIFIER,MIN_VALUE,MAX_VALUE,MAX_POINTS))
+  acLogger.warning('setRange(CONTROL_IDENTIFIER=%d,MIN_VALUE=%f,MAX_VALUE=%f,MAX_POINTS=%f)' % (CONTROL_IDENTIFIER,MIN_VALUE,MAX_VALUE,MAX_POINTS))
   return Status.SUCCESS
   # MIN_VALUE,MAX_VALUE,MAX_POINTS must be floating point numbers
   # In order to plot the data inside the Graph it is necessary to specify the amplitude of the
@@ -636,21 +645,23 @@ def setRange(CONTROL_IDENTIFIER,MIN_VALUE,MAX_VALUE,MAX_POINTS):
 # Spinner:
 
 def addSpinner(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addSpinner(CONTROL_IDENTIFIER, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
-  pass
+  acLogger.warning('addSpinner(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE))
+  _o = acInTk.acInTk()
+  return _o.addSpinner(CONTROL_IDENTIFIER, VALUE)
   # VALUE must be a string
   # It is possible to add a Spinner using the function
   # The function returns the Spinner ID on success, -1 otherwise
 
 def setRange(CONTROL_IDENTIFIER, MIN_VALUE,MAX_VALUE):
-  acLogger.warning('setRange(CONTROL_IDENTIFIER, MIN_VALUE,MAX_VALUE=%d)' % (CONTROL_IDENTIFIER, MIN_VALUE,MAX_VALUE))
-  return Status.SUCCESS
+  acLogger.warning('setRange(CONTROL_IDENTIFIER=%d, MIN_VALUE=%f,MAX_VALUE=%f)' % (CONTROL_IDENTIFIER, MIN_VALUE,MAX_VALUE))
+  _o = acInTk.acInTk()
+  return _o.setRange(CONTROL_IDENTIFIER, MIN_VALUE,MAX_VALUE)
   # MIN_VALUE,MAX_VALUE must be floating point numbers
   # It is possible to set the min and max values of the Control:
   # The function returns 1 on success, -1 otherwise
 
 def setValue(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('setValue(CONTROL_IDENTIFIER, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
+  acLogger.warning('setValue(CONTROL_IDENTIFIER=%d, VALUE=%f)' % (CONTROL_IDENTIFIER, VALUE))
   return Status.SUCCESS
   # VALUE must be floating point number
   # This function set the "value" parameter of the specific Control if this is an available
@@ -667,14 +678,14 @@ def getValue(CONTROL_IDENTIFIER):
   # The function returns the value on success, -1 otherwise
 
 def setStep(CONTROL_IDENTIFIER,VALUE):
-  acLogger.warning('setStep(CONTROL_IDENTIFIER,VALUE=%d)' % (CONTROL_IDENTIFIER,VALUE))
+  acLogger.warning('setStep(CONTROL_IDENTIFIER=%d,VALUE=%f)' % (CONTROL_IDENTIFIER,VALUE))
   return Status.SUCCESS
   # CONTROL_IDENTIFIER must be a Spinner ID VALUE must be floating point number
   # Set the value added or subtracted when the + or - button is pressed in a Spinner controller.
   # The function returns 1 on success, -1 otherwise
 
 def addOnValueChangeListener(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addOnValueChangeListener(CONTROL_IDENTIFIER, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
+  acLogger.warning('addOnValueChangeListener(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE.__name__))
   return Status.SUCCESS
   # VALUE must be a function name defined inside the Python script
   # It is now possible to associate the spinner with an event to trigger when one of the two
@@ -684,7 +695,7 @@ def addOnValueChangeListener(CONTROL_IDENTIFIER, VALUE):
 # Progress Bar :
 
 def addProgressBar(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addProgressBar(CONTROL_IDENTIFIER, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
+  acLogger.warning('addProgressBar(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE))
   pass
   # VALUE must be a string
   # It is possible to add a Progress Bar using the function
@@ -693,21 +704,21 @@ def addProgressBar(CONTROL_IDENTIFIER, VALUE):
 # Input Text :
 
 def addInputText(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addInputText(CONTROL_IDENTIFIER, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
+  acLogger.warning('addInputText(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE))
   pass
   # VALUE must be a string
   # It is possible to add an Input Text Field using the function
   # The function returns the Input Text ID on success, -1 otherwise
 
 def setFocus(CONTROL_IDENTIFIER, FOCUS):
-  acLogger.warning('setFocus(CONTROL_IDENTIFIER, FOCUS=%d)' % (CONTROL_IDENTIFIER, FOCUS))
+  acLogger.warning('setFocus(CONTROL_IDENTIFIER=%d, FOCUS=%d)' % (CONTROL_IDENTIFIER, FOCUS))
   return Status.SUCCESS
   # CONTROL_IDENTIFIER must be an Input Text, FOCUS must be 0 or 1
   # If FOCUS is 1, this function sets the Input Text as first responder.
   # The function returns 1 on success, -1 otherwise
 
 def addOnValidateListener(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addOnValidateListener(CONTROL_IDENTIFIER, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
+  acLogger.warning('addOnValidateListener(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE))
   return Status.SUCCESS
   # VALUE must be a function name defined inside the Python script
   # It is possible to associate the CONTROL_IDENTIFIER with an event to trigger when the
@@ -717,14 +728,14 @@ def addOnValidateListener(CONTROL_IDENTIFIER, VALUE):
 # List Box :
 
 def addListBox(CONTROL_IDENTIFIER,NAME):
-  acLogger.warning('addListBox(CONTROL_IDENTIFIER,NAME=%d)' % (CONTROL_IDENTIFIER,NAME))
+  acLogger.warning('addListBox(CONTROL_IDENTIFIER=%d,NAME=%s)' % (CONTROL_IDENTIFIER,NAME))
   pass
   # CONTROL_IDENTIFIER must be a window identifier
   # This method adds a List Box to the window specified by CONTROL_IDENTIFIER
   # The function returns the ListBox ID on success, -1 otherwise
 
 def addItem(CONTROL_IDENTIFIER,NAME):
-  acLogger.warning('addItem(CONTROL_IDENTIFIER,NAME=%d)' % (CONTROL_IDENTIFIER,NAME))
+  acLogger.warning('addItem(CONTROL_IDENTIFIER=%d,NAME=%s)' % (CONTROL_IDENTIFIER,NAME))
   pass
   # CONTROL_IDENTIFIER must be a ListBox identifier
   # This method adds a List Box item to the List Box specified.
@@ -732,7 +743,7 @@ def addItem(CONTROL_IDENTIFIER,NAME):
   # This function returns the ListBox Item ID on success, -1 otherwise
 
 def removeItem(CONTROL_IDENTIFIER,ID):
-  acLogger.warning('removeItem(CONTROL_IDENTIFIER,ID=%d)' % (CONTROL_IDENTIFIER,ID))
+  acLogger.warning('removeItem(CONTROL_IDENTIFIER=%d,ID=%d)' % (CONTROL_IDENTIFIER,ID))
   pass
   # CONTROL_IDENTIFIER must be a ListBox identifier
   # This method removes from the List Box the item with ID as identifier
@@ -745,7 +756,7 @@ def getItemCount(CONTROL_IDENTIFIER):
   # This function returns the size of the List Box on success, -1 otherwise
 
 def setItemNumberPerPage(CONTROL_IDENTIFIER,NUMBER):
-  acLogger.warning('setItemNumberPerPage(CONTROL_IDENTIFIER,NUMBER=%d)' % (CONTROL_IDENTIFIER,NUMBER))
+  acLogger.warning('setItemNumberPerPage(CONTROL_IDENTIFIER=%d,NUMBER=%d)' % (CONTROL_IDENTIFIER,NUMBER))
   return Status.SUCCESS
   # CONTROL_IDENTIFIER must be a ListBox identifier, NUMBER is the number of
   # element to be displayed desired for each page
@@ -753,14 +764,14 @@ def setItemNumberPerPage(CONTROL_IDENTIFIER,NUMBER):
   # This function returns 1 on success, -1 otherwise
 
 def highlightListBoxItem(CONTROL_IDENTIFIER,ID):
-  acLogger.warning('highlightListBoxItem(CONTROL_IDENTIFIER,ID=%d)' % (CONTROL_IDENTIFIER,ID))
+  acLogger.warning('highlightListBoxItem(CONTROL_IDENTIFIER=%d,ID=%d)' % (CONTROL_IDENTIFIER,ID))
   return Status.SUCCESS
   # CONTROL_IDENTIFIER must be a ListBox identifier, ID is the element to be selected
   # This function sets the list box item with ID as identifier as selected.
   # This function returns 1 on success, -1 otherwise
 
 def addOnListBoxSelectionListener(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addOnListBoxSelectionListener(CONTROL_IDENTIFIER, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
+  acLogger.warning('addOnListBoxSelectionListener(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE))
   return Status.SUCCESS
   # VALUE must be a function name defined inside the Python script
   # Control identifier must be a List Box controller otherwise the function does nothing and
@@ -772,7 +783,7 @@ def addOnListBoxSelectionListener(CONTROL_IDENTIFIER, VALUE):
   # The function returns 1 on success, -1 otherwise
 
 def addOnListBoxDeselectionListener(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addOnListBoxDeselectionListener(CONTROL_IDENTIFIER, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
+  acLogger.warning('addOnListBoxDeselectionListener(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE))
   return Status.SUCCESS
   # VALUE must be a function name defined inside the Python script
   # Control identifier must be a List Box controller otherwise the function does nothing and
@@ -784,7 +795,7 @@ def addOnListBoxDeselectionListener(CONTROL_IDENTIFIER, VALUE):
   # The function returns 1 on success, -1 otherwise
 
 def setAllowDeselection(CONTROL_IDENTIFIER,ALLOW_DESELECTION):
-  acLogger.warning('setAllowDeselection(CONTROL_IDENTIFIER,ALLOW_DESELECTION=%d)' % (CONTROL_IDENTIFIER,ALLOW_DESELECTION))
+  acLogger.warning('setAllowDeselection(CONTROL_IDENTIFIER=%d,ALLOW_DESELECTION=%d)' % (CONTROL_IDENTIFIER,ALLOW_DESELECTION))
   return Status.SUCCESS
   # CONTROL_IDENTIFIER must be a ListBox identifier, ALLOW_DESELECTION must
   # be 0 or 1
@@ -796,7 +807,7 @@ def setAllowDeselection(CONTROL_IDENTIFIER,ALLOW_DESELECTION):
   # This function returns 1 on success, -1 otherwise
 
 def setAllowMultiSelection(CONTROL_IDENTIFIER,ALLOW_MULTI_SELECTION):
-  acLogger.warning('setAllowMultiSelection(CONTROL_IDENTIFIER,ALLOW_MULTI_SELECTION=%d)' % (CONTROL_IDENTIFIER,ALLOW_MULTI_SELECTION))
+  acLogger.warning('setAllowMultiSelection(CONTROL_IDENTIFIER=%d,ALLOW_MULTI_SELECTION=%d)' % (CONTROL_IDENTIFIER,ALLOW_MULTI_SELECTION))
   return Status.SUCCESS
   # CONTROL_IDENTIFIER must be a ListBox identifier, ALLOW_MULTI_SELECTION
   # must be 0 or 1
@@ -815,14 +826,15 @@ def getSelectedItems(CONTROL_IDENTIFIER):
 # Check Box :
 
 def addCheckBox(CONTROL_IDENTIFIER,VALUE):
-  acLogger.warning('addCheckBox(CONTROL_IDENTIFIER,VALUE=%d)' % (CONTROL_IDENTIFIER,VALUE))
-  pass
+  acLogger.warning('addCheckBox(CONTROL_IDENTIFIER=%d,VALUE=%s)' % (CONTROL_IDENTIFIER,VALUE))
+  _o = acInTk.acInTk()
+  return _o.addCheckBox(CONTROL_IDENTIFIER,VALUE)
   # CONTROL_IDENTIFIER must be a form ,VALUE must be the form's name
   # This function adds a checkbox to the current form passed as CONTROL_IDENTIFIER.
   # The function returns the checkbox created on success, -1 otherwise
 
 def addOnCheckBoxChanged(CONTROL_IDENTIFIER, VALUE):
-  acLogger.warning('addOnCheckBoxChanged(CONTROL_IDENTIFIER, VALUE=%d)' % (CONTROL_IDENTIFIER, VALUE))
+  acLogger.warning('addOnCheckBoxChanged(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE))
   return Status.SUCCESS
   # VALUE must be a function name defined inside the Python script
   # Control identifier must be a Check Box controller otherwise the function does nothing and
@@ -836,7 +848,7 @@ def addOnCheckBoxChanged(CONTROL_IDENTIFIER, VALUE):
 # Text Box :
 
 def addTextBox(CONTROL_IDENTIFIER,NAME):
-  acLogger.warning('addTextBox(CONTROL_IDENTIFIER,NAME=%d)' % (CONTROL_IDENTIFIER,NAME))
+  acLogger.warning('addTextBox(CONTROL_IDENTIFIER=%d,NAME=%s)' % (CONTROL_IDENTIFIER,NAME))
   return Status.SUCCESS
   # CONTROL_IDENTIFIER form identifier, NAME text box name
   # This method adds a text box (scrollable if the text is longer than the textbox, to the current
@@ -846,7 +858,7 @@ def addTextBox(CONTROL_IDENTIFIER,NAME):
 # GRAPHICS AND RENDERING :
 
 def newTexture(PATH):
-  acLogger.warning('newTexture(PATH=%d)' % (PATH))
+  acLogger.warning('newTexture(PATH=%s)' % (PATH))
   pass
   # PATH must be a string, the path is considered from AC installation directory.
   # This method loads in memory the texture specified by path and return the size of the stored
@@ -865,27 +877,27 @@ def glBegin(PRIMITIVE_ID):
   # This function returns 1 on success, -1 otherwise
 
 def glEnd(void):
-  acLogger.warning('glEnd(void=%d)' % (void))
+  acLogger.warning('glEnd()')
   return Status.SUCCESS
   # Finishes the render of a previous specified primitive
   # This function returns 1 on success
 
 def glVertex2f(X,Y):
-  acLogger.warning('glVertex2f(X,Y=%d)' % (X,Y))
+  acLogger.warning('glVertex2f(X=%f,Y=%f)' % (X,Y))
   return Status.SUCCESS
   # X,Y must be a floating point numbers
   # Adds a 2d point to the rendering queue.
   # This function returns 1 on success, -1 otherwise
 
 def glColor3f(R,G,B):
-  acLogger.warning('glColor3f(R,G,B=%d)' % (R,G,B))
+  acLogger.warning('glColor3f(R=%f,G=%f,B=%f)' % (R,G,B))
   return Status.SUCCESS
   # R,G,B rgb coordinates scaled from 0 to 1, must be a floating point numbers
   # set the current rendering color to R,G,B color.
   # This function returns 1 on success, -1 otherwise
 
 def glColor4f(R,G,B,A):
-  acLogger.warning('glColor4f(R,G,B,A=%d)' % (R,G,B,A))
+  acLogger.warning('glColor4f(R=%f,G=%f,B=%f,A=%f)' % (R,G,B,A))
   return Status.SUCCESS
   # R,G,B rgb coordinates scaled from 0 to 1, A alpha component from 0 to 1, all the
   # values must be a floating point numbers
@@ -893,14 +905,14 @@ def glColor4f(R,G,B,A):
   # This function returns 1 on success, -1 otherwise
 
 def glQuad(X,Y,WIDTH,HEIGHT):
-  acLogger.warning('glQuad(X,Y,WIDTH,HEIGHT=%d)' % (X,Y,WIDTH,HEIGHT))
+  acLogger.warning('glQuad(X=%f,Y=%f,WIDTH=%f,HEIGHT=%f)' % (X,Y,WIDTH,HEIGHT))
   return Status.SUCCESS
   # X,Y,WIDTH,HEIGHT must be a floating point numbers
   # draw a quad quickly without using glBegin, ... , glEnd
   # This function returns 1 on success, -1 otherwise
 
 def glQuadTextured(X,Y,WIDTH,HEIGHT,TEXTURE_ID):
-  acLogger.warning('glQuadTextured(X,Y,WIDTH,HEIGHT,TEXTURE_ID=%d)' % (X,Y,WIDTH,HEIGHT,TEXTURE_ID))
+  acLogger.warning('glQuadTextured(X=%f,Y=%f,WIDTH=%f,HEIGHT=%f,TEXTURE_ID=%d)' % (X,Y,WIDTH,HEIGHT,TEXTURE_ID))
   return Status.SUCCESS
   # X,Y,WIDTH,HEIGHT must be a floating point numbers, TEXTURE_ID is the id
   # of the texture previously loaded.

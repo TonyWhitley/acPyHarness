@@ -1,5 +1,6 @@
 from enum import IntEnum
 from tkinter import *
+from tkinter import font
 from tkinter import ttk
 from PIL import Image, ImageTk
 
@@ -13,9 +14,12 @@ class Control(object):
   name = None
   controlId = None
   control = None
+  canvas = None
   label = None
   image = None
+  button = None
   root = None
+  app = None
 
 controls = []
 
@@ -50,12 +54,13 @@ class acInTk(object):
     # returns the App ID on success, -1 otherwise
     _o = Control()
     _o.root = Tk()
-    _o.control = Canvas(width=1, height=1, bg='black')
+    _o.app = Canvas(width=1, height=1, bg='black')
 
     # pack the canvas into a frame/form
-    _o.control.pack(expand=YES, fill=BOTH)
+    _o.app.pack(expand=YES, fill=BOTH)
     _o.controlId = len(controls)
 
+    # set up a callback for when the App is closed/deleted
     _o.root.protocol("WM_DELETE_WINDOW", self._delete_window)
     controls.append(_o)
     return _o.controlId
@@ -72,8 +77,12 @@ class acInTk(object):
     # The function returns 1 on success, -1 otherwise
 
   def setSize(self, CONTROL_IDENTIFIER,WIDTH,HEIGHT):
-      controls[CONTROL_IDENTIFIER].control.config(width = _scale(WIDTH))
-      controls[CONTROL_IDENTIFIER].control.config(height = _scale(HEIGHT))
+    if controls[CONTROL_IDENTIFIER].app:
+      controls[CONTROL_IDENTIFIER].app.config(width = _scale(WIDTH))
+      controls[CONTROL_IDENTIFIER].app.config(height = _scale(HEIGHT))
+    if controls[CONTROL_IDENTIFIER].label:
+      controls[CONTROL_IDENTIFIER].label.config(width = _scale(WIDTH))
+      controls[CONTROL_IDENTIFIER].label.config(height = _scale(HEIGHT))
       return Status.SUCCESS
     # WIDTH,HEIGHT must be a floating point numbers
     # This function will set the size of a control specified by CONTROL_IDENTIFIER .
@@ -81,12 +90,19 @@ class acInTk(object):
 
   def addLabel(self, CONTROL_IDENTIFIER,VALUE):
     _o = Control()
-    label_frame = Frame(controls[CONTROL_IDENTIFIER].control)
-    label_frame.pack_propagate(False) # Stops child widgets of label_frame from resizing it
+    lblHandling = 2
+    if lblHandling == 0:
+      label_frame = Frame(controls[CONTROL_IDENTIFIER].control)
+      label_frame.pack_propagate(False) # Stops child widgets of label_frame from resizing it
+      #_o.control = label_frame
+      _o.label = Label(label_frame, text=VALUE)
+    elif lblHandling == 1:
+      _o.label = Label(controls[CONTROL_IDENTIFIER].control, text=VALUE)
+      _o.control = _o.label
+    elif lblHandling == 2:
+      _o.control = Canvas(width=1, height=1, bg='black')
+      _o.label = Label(controls[CONTROL_IDENTIFIER].control, text=VALUE)
 
-    _o.control = label_frame
-    _o.label = Label(label_frame, text=VALUE)
-    #_o.control = Label(controls[CONTROL_IDENTIFIER].control, text=VALUE)
     _o.controlId = len(controls)
 
     controls.append(_o)
@@ -97,8 +113,11 @@ class acInTk(object):
     # The function returns 1 on success, -1 otherwise
 
   def setPosition(self, CONTROL_IDENTIFIER,X,Y):
-      controls[CONTROL_IDENTIFIER].control.place(x = _scale(X), y = _scale(Y))
-      return Status.SUCCESS
+    if controls[CONTROL_IDENTIFIER].app:
+      controls[CONTROL_IDENTIFIER].app.place(x = _scale(X), y = _scale(Y))
+    elif controls[CONTROL_IDENTIFIER].label:
+      controls[CONTROL_IDENTIFIER].label.place(x = _scale(X), y = _scale(Y))
+    return Status.SUCCESS
     # X,Y must be a floating point numbers
     # Use ac.setPosition to set the control's position specified by CONTROL_IDENTIFIER in
     # the app.
@@ -125,6 +144,7 @@ class acInTk(object):
     # The function returns the position as a tuple x,y on success, -1 otherwise
 
   def setText(self, CONTROL_IDENTIFIER, VALUE):
+      controls[CONTROL_IDENTIFIER].label.config(text = VALUE)
       return Status.SUCCESS
     # VALUE must be a string, CONTROL_IDENTIFIER is the control that we want to set the
     # text to
@@ -133,7 +153,8 @@ class acInTk(object):
     # The function returns 1 on success, -1 otherwise
 
   def getText(self, CONTROL_IDENTIFIER):
-      pass
+      _text = controls[CONTROL_IDENTIFIER].label["text"]
+      return _text
     # CONTROL_IDENTIFIER is the control that we want to get the text from
     # Use ac.getText to get the control's text.
     # This function returns the coordinates x,y of the control on success, -1 otherwise
@@ -163,7 +184,10 @@ class acInTk(object):
     image_pil = Image.open(img_name) #.resize((200, 100), Image.ANTIALIAS)
     imgobj = ImageTk.PhotoImage(image_pil)
     controls[CONTROL_IDENTIFIER].image = imgobj # keep a reference!
-    controls[CONTROL_IDENTIFIER].control.create_image(0, 0, image=imgobj, anchor=NW)
+    if controls[CONTROL_IDENTIFIER].app:
+      controls[CONTROL_IDENTIFIER].app.create_image(0, 0, image=imgobj, anchor=NW)
+    elif controls[CONTROL_IDENTIFIER].button:
+      controls[CONTROL_IDENTIFIER].button.config(image=imgobj)
     return Status.SUCCESS
     """
       #try:
@@ -204,14 +228,20 @@ class acInTk(object):
     # The function returns 1 on success, -1 otherwise
 
   def setBackgroundColor(self, CONTROL_IDENTIFIER, R,G,B):
-      return Status.SUCCESS
+    _color = '#%02x%02x%02x' % (R, G, B)
+    controls[CONTROL_IDENTIFIER].label.configure(bg = _color)
+    return Status.SUCCESS
     # PATH starts from Assetto Corsa root folder
     # Use ac.setBackgroundColor to set the background color of the window as specified by the
     # R,G,B values
     # The function returns 1 on success, -1 otherwise
 
   def setVisible(self, CONTROL_IDENTIFIER, VALUE):
-      return Status.SUCCESS
+    if VALUE == 0:
+      pass # error: controls[CONTROL_IDENTIFIER].label.withdraw()
+    else:
+      pass # error: controls[CONTROL_IDENTIFIER].label.update()
+    return Status.SUCCESS
     # VALUE must be 0 or 1
     # It is possible to hide the object using the function ac.setVisible with VALUE set to 1.
     # The function returns 1 on success, -1 otherwise
@@ -239,13 +269,30 @@ class acInTk(object):
     # The function returns 1 on success, -1 otherwise
 
   def setFontColor(self, CONTROL_IDENTIFIER,R,G,B,A):
+    _R = int(R * 255)
+    _G = int(G * 255)
+    _B = int(B * 255)
+    _color = '#%02x%02x%02x' % (_R, _G, _B)
+    if controls[CONTROL_IDENTIFIER].label:
+      controls[CONTROL_IDENTIFIER].label.configure(fg = _color)
       return Status.SUCCESS
+    return Status.FAIL # it's not a label
     # CONTROL_IDENTIFIER must be a Controlidentifier, R,G,B,A are the color
     # value scaled from 0 to 1
     # This function returns 1 on success, -1 otherwise
 
   def setFontSize(self, CONTROL_IDENTIFIER, VALUE):
-      return Status.SUCCESS
+    ##_font = font.Font(controls[CONTROL_IDENTIFIER].label['font'])
+    ##_font.config.setFontSize(VALUE)
+    ##controls[CONTROL_IDENTIFIER].label['font'] = _font
+    if controls[CONTROL_IDENTIFIER].button:
+      controls[CONTROL_IDENTIFIER].button.config(font = (None, -int(VALUE))) # Font size (in points if positive, in pixels if negative)
+      ##_s = ttk.Style()
+      ##_s.configure('my.TButton', font=('Helvetica', 12))
+      ##b = ttk.Button(mainframe, text='Press me', style='my.TButton',
+    elif controls[CONTROL_IDENTIFIER].label:
+      controls[CONTROL_IDENTIFIER].label.config(font = (None, -int(VALUE))) # Font size (in points if positive, in pixels if negative)
+    return Status.SUCCESS
     # This method set VALUE as new new size of the control's font.
     # The function returns 1 on success, -1 otherwise
 
@@ -276,7 +323,17 @@ class acInTk(object):
   # Button:
 
   def addButton(self, CONTROL_IDENTIFIER, VALUE):
-      pass
+    _o = Control()
+    _button = Button(controls[CONTROL_IDENTIFIER].control, text= VALUE)
+
+    _o.control = _button
+    _o.button = _o.control 
+    _o.controlId = len(controls)
+
+    controls.append(_o)
+    return _o.controlId
+    # VALUE must be a string
+
     # VALUE must be a string, CONTROL_IDENTIFIER must be a form
     # The function adds a Button to the window specified by CONTROL_IDENTIFIER
     # The function returns the Button ID on success, -1 otherwise
@@ -318,7 +375,15 @@ class acInTk(object):
   # Spinner:
 
   def addSpinner(self, CONTROL_IDENTIFIER, VALUE):
-      pass
+    _o = Control()
+    _button = Button(controls[CONTROL_IDENTIFIER].control, text= VALUE)
+
+    _o.control = _button
+    _o.button = _o.control 
+    _o.controlId = len(controls)
+
+    controls.append(_o)
+    return _o.controlId
     # VALUE must be a string
     # It is possible to add a Spinner using the function
     # The function returns the Spinner ID on success, -1 otherwise
@@ -476,7 +541,15 @@ class acInTk(object):
   # Check Box :
 
   def addCheckBox(self, CONTROL_IDENTIFIER,VALUE):
-      pass
+    _o = Control()
+    _button = Checkbutton(controls[CONTROL_IDENTIFIER].control, text= VALUE)
+
+    _o.control = _button
+    _o.button = _o.control 
+    _o.controlId = len(controls)
+
+    controls.append(_o)
+    return _o.controlId
     # CONTROL_IDENTIFIER must be a form ,VALUE must be the form's name
     # This function adds a checkbox to the current form passed as CONTROL_IDENTIFIER.
     # The function returns the checkbox created on success, -1 otherwise

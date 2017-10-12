@@ -243,3 +243,12 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/AssettoCorsa/apps/python/Sidekick
+/AssettoCorsa/content/gui/icons/Sidekick_ON.png
+/AssettoCorsa/content/gui/icons/Sidekick_OFF.png
+/AssettoCorsa/content/gui/icons/Sidekick settings_ON.png
+/AssettoCorsa/content/gui/icons/Sidekick settings_OFF.png
+/AssettoCorsa/content/gui/icons/Sidekick car data_ON.png
+/AssettoCorsa/content/gui/icons/Sidekick car data_OFF.png
+/AssettoCorsa/content/fonts/Roboto-Italic.ttf
+/AssettoCorsa/content/fonts/Roboto-BlackItalic.ttf
