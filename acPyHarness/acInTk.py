@@ -33,6 +33,8 @@ def acUpdate(deltaT, acUpdateFn):
   _tick()     # Set it going
   mainloop()  # Tk main loop handling events
 
+def noAcUpdate():
+  mainloop()  # Tk main loop handling events
 
 
 
@@ -83,7 +85,7 @@ class acInTk(object):
     if controls[CONTROL_IDENTIFIER].label:
       controls[CONTROL_IDENTIFIER].label.config(width = _scale(WIDTH))
       controls[CONTROL_IDENTIFIER].label.config(height = _scale(HEIGHT))
-      return Status.SUCCESS
+    return Status.SUCCESS
     # WIDTH,HEIGHT must be a floating point numbers
     # This function will set the size of a control specified by CONTROL_IDENTIFIER .
     # The function returns 1 on success, -1 otherwise
@@ -254,7 +256,10 @@ class acInTk(object):
     # The function returns 1 on success, -1 otherwise
 
   def addOnAppActivatedListener(self, CONTROL_IDENTIFIER, VALUE):
+    if controls[CONTROL_IDENTIFIER].app:
+      # HOW?? controls[CONTROL_IDENTIFIER].app.config()
       return Status.SUCCESS
+    return Status.FAIL # it's not an app
     # VALUE must be a function name defined inside the Python script,
     # CONTROL_IDENTIFIER must be an app.
     # This method set the VALUE function as callback function for the event of app selection on
@@ -270,7 +275,10 @@ class acInTk(object):
     # The function returns 1 on success, -1 otherwise
 
   def addRenderCallback(self, CONTROL_IDENTIFIER, VALUE):
+    if controls[CONTROL_IDENTIFIER].canvas:
+      # HOW?? controls[CONTROL_IDENTIFIER].canvas.configure(callback=VALUE)
       return Status.SUCCESS
+    return Status.FAIL # it's not a canvas
     # VALUE must be a function name defined inside the Python script
     # This method set the VALUE function as callback function for the finished rendering event.
     # The function returns 1 on success, -1 otherwise

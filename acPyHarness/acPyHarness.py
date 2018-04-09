@@ -4,12 +4,14 @@ import importlib
 import os
 import sys
 import logging
-from acInTk import acUpdate
+from acInTk import acUpdate, noAcUpdate
 
 # Assetto Corsa Python app under development:
 # (in this case ..\AssettoCorsa\apps\python\driftbox\driftbox.py)
 appName = 'driftbox'  # the app module name is Case Sensitive, so Sidekick for example
 #appName = 'admintools'
+#appName = 'proTyres'
+#appName = 'camber-extravaganza'
 appPath = os.path.join(os.getcwd(),  'apps', 'python', appName)
 
 # create logger
@@ -46,6 +48,10 @@ def main():
   appModule.acMain(ac_version)
 
   logger.info("Repeatedly call app's acUpdate() as if called from AC")
-  acUpdate(deltaT, appModule.acUpdate)
+  try:
+    acUpdate(deltaT, appModule.acUpdate)
+  except:
+    logger.info("App doesn't have acUpdate()")
+    noAcUpdate()
 
 main()

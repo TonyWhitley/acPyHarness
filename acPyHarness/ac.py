@@ -531,7 +531,8 @@ def setVisible(CONTROL_IDENTIFIER, VALUE):
 
 def addOnAppActivatedListener(CONTROL_IDENTIFIER, VALUE):
   acLogger.warning('addOnAppActivatedListener(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE.__name__))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.addOnAppActivatedListener(CONTROL_IDENTIFIER, VALUE)
   # VALUE must be a function name defined inside the Python script,
   # CONTROL_IDENTIFIER must be an app.
   # This method set the VALUE function as callback function for the event of app selection on
@@ -559,7 +560,8 @@ def addOnChatMessageListener(CONTROL_IDENTIFIER, VALUE):
 
 def addRenderCallback(CONTROL_IDENTIFIER, VALUE):
   acLogger.warning('addRenderCallback(CONTROL_IDENTIFIER=%d, VALUE="%s()" )' % (CONTROL_IDENTIFIER, VALUE.__name__))
-  return Status.SUCCESS
+  _o = acInTk.acInTk()
+  return _o.addRenderCallback(CONTROL_IDENTIFIER, VALUE)
   # VALUE must be a function name defined inside the Python script
   # This method set the VALUE function as callback function for the finished rendering event.
   # The function returns 1 on success, -1 otherwise
