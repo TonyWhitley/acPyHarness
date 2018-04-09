@@ -144,7 +144,14 @@ class acInTk(object):
     # The function returns the position as a tuple x,y on success, -1 otherwise
 
   def setText(self, CONTROL_IDENTIFIER, VALUE):
-      controls[CONTROL_IDENTIFIER].label.config(text = VALUE)
+      if isinstance(controls[CONTROL_IDENTIFIER].control, Label):
+        controls[CONTROL_IDENTIFIER].label.config(text = VALUE)
+      elif isinstance(controls[CONTROL_IDENTIFIER].control, Entry):
+        controls[CONTROL_IDENTIFIER].button.config(text = VALUE)
+      elif isinstance(controls[CONTROL_IDENTIFIER].control, Button):
+        controls[CONTROL_IDENTIFIER].button.config(text = VALUE)
+      else:
+        pass
       return Status.SUCCESS
     # VALUE must be a string, CONTROL_IDENTIFIER is the control that we want to set the
     # text to
@@ -433,7 +440,15 @@ class acInTk(object):
   # Input Text :
 
   def addInputText(self, CONTROL_IDENTIFIER, VALUE):
-      pass
+    _o = Control()
+    _entry = Entry(controls[CONTROL_IDENTIFIER].control, text= VALUE)
+
+    _o.control = _entry
+    _o.button = _o.control 
+    _o.controlId = len(controls)
+
+    controls.append(_o)
+    return _o.controlId
     # VALUE must be a string
     # It is possible to add an Input Text Field using the function
     # The function returns the Input Text ID on success, -1 otherwise

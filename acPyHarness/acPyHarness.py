@@ -9,6 +9,7 @@ from acInTk import acUpdate
 # Assetto Corsa Python app under development:
 # (in this case ..\AssettoCorsa\apps\python\driftbox\driftbox.py)
 appName = 'driftbox'  # the app module name is Case Sensitive, so Sidekick for example
+#appName = 'admintools'
 appPath = os.path.join(os.getcwd(),  'apps', 'python', appName)
 
 # create logger

@@ -1,4 +1,6 @@
 # Python file created semi-automatically from AC Python Documentation (ACPythonDocumentation.pdf)
+# http://www.assettocorsa.net/forum/index.php?threads/python-doc-update-25-05-2017.517/
+
 import logging
 from enum import IntEnum
 class Status(IntEnum):
@@ -363,7 +365,7 @@ def getFocusedCar():
 # DEBUG:
 
 def log(VALUE):
-  acLogger.warning('log(VALUE=%d)' % (VALUE))
+  acLogger.warning('log(VALUE=%s)' % (VALUE))
   return Status.SUCCESS
   # VALUE must be a string
   # Use ac.log if you want to send some text to the AC log.txt file
@@ -545,6 +547,16 @@ def addOnAppDismissedListener(CONTROL_IDENTIFIER, VALUE):
   # on the task bar.
   # The function returns 1 on success, -1 otherwise
 
+# Not in documentation
+def addOnChatMessageListener(CONTROL_IDENTIFIER, VALUE):
+  acLogger.warning('addOnAppDismissedListener(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE.__name__))
+  return Status.SUCCESS
+  # VALUE must be a function name defined inside the Python script,
+  # CONTROL_IDENTIFIER must be an app.
+  # This method set the VALUE function as callback function for the event of app deselection
+  # on the task bar.
+  # The function returns 1 on success, -1 otherwise
+
 def addRenderCallback(CONTROL_IDENTIFIER, VALUE):
   acLogger.warning('addRenderCallback(CONTROL_IDENTIFIER=%d, VALUE="%s()" )' % (CONTROL_IDENTIFIER, VALUE.__name__))
   return Status.SUCCESS
@@ -703,9 +715,11 @@ def addProgressBar(CONTROL_IDENTIFIER, VALUE):
 
 # Input Text :
 
-def addInputText(CONTROL_IDENTIFIER, VALUE):
+# Wrong name in documentation def addInputText(CONTROL_IDENTIFIER, VALUE):
+def addTextInput(CONTROL_IDENTIFIER, VALUE):
   acLogger.warning('addInputText(CONTROL_IDENTIFIER=%d, VALUE=%s)' % (CONTROL_IDENTIFIER, VALUE))
-  pass
+  _o = acInTk.acInTk()
+  return _o.addInputText(CONTROL_IDENTIFIER,VALUE)
   # VALUE must be a string
   # It is possible to add an Input Text Field using the function
   # The function returns the Input Text ID on success, -1 otherwise
